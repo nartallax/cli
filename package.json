@@ -1,12 +1,20 @@
 {
   "name": "@nartallax/cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library for creating command-line interface for NodeJS applications",
   "author": "Nartallax",
   "license": "0BSD",
   "types": "cli.d.ts",
   "main": "cli.js",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nartallax/cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nartallax/cli/issues"
+  },
+  "homepage": "https://github.com/nartallax/cli#readme",
   "scripts": {
     "typecheck": "cd src && npx tsc --noEmit && cd - > /dev/null",
     "build": "npm run typecheck && npm run build:prepare && npm run build:build && npm run dts && npm run build:copy_static",
