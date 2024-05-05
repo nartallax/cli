@@ -11,6 +11,7 @@ export namespace CLI {
 		readonly keys: string[]
 		readonly description?: string
 		readonly allowedValues?: readonly MaybeUnpackArray<V>[]
+		readonly isHidden?: boolean
 	}
 
 	interface BoolArgDef extends BaseArgDef<boolean>{
@@ -173,6 +174,10 @@ export namespace CLI {
 
 			argNames.forEach(argName => {
 				const def = this.params.options[argName]
+				if(def.isHidden){
+					return
+				}
+
 				let line = keyPart(argName)
 				while(line.length < maxKeyLength){
 					line += " "
