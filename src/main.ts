@@ -351,7 +351,7 @@ export namespace CLI {
 
 		/** Check everything that was not checked until this point, and process help if any */
 		private finalize(result: Record<keyof T, unknown>): T {
-			const abstentMandatories: string[] = []
+			const abstentMandatories: (string & keyof T)[] = []
 			let haveHelp = false;
 			(Object.keys(this.params.options) as (string & keyof(T))[]).forEach(argName => {
 				const def = this.params.options[argName]
@@ -382,10 +382,16 @@ export namespace CLI {
 			}
 
 			if(!haveHelp && abstentMandatories.length > 0){
-				this.fail("Some mandatory CLI arguments are absent: " + abstentMandatories.map(x => "\"" + x + "\"").join(", "))
+				let keys = abstentMandatories.map(opt => this.getLongestKey(opt))
+				this.fail("Some mandatory CLI arguments are absent: " + keys.join(", "))
 			}
 
 			return result as T
+		}
+
+		private getLongestKey(opt: string & keyof T): string {
+			let def = this.params.options[opt]
+			return def.keys.sort((a, b) => b.length - a.length)[0] ?? opt
 		}
 
 	}
