@@ -16,46 +16,20 @@
   },
   "homepage": "https://github.com/nartallax/cli#readme",
   "scripts": {
-    "typecheck": "cd src && npx tsc --noEmit && cd - > /dev/null",
-    "build": "npm run typecheck && npm run build:prepare && npm run build:build && npm run dts && npm run build:copy_static",
-    "build:prepare": "rm -rf ./target && rm -rf ./dist && mkdir ./target",
-    "build:build": "npx parcel build --target release --no-cache && cp ./dist/main.js ./target/cli.js",
-    "build:copy_static": "cp ./LICENSE ./target/ && cp ./README.md ./target && npm run build:cut_package",
-    "build:cut_package": "npx package-cutter --output ./target/package.json",
-    "dts": "npm run dts:generate && npm run dts:cleanup",
-    "dts:generate": "npx parcel build --target types --no-cache",
-    "dts:cleanup": "mv ./cli.d.ts ./target/cli.d.ts",
-    "pub": "npm run build && npm run pub:publish",
-    "pub:publish": "cd target && npm publish --access public"
+    "typecheck": "node build.mjs typecheck",
+    "build": "node build.mjs build",
+    "pub": "node build.mjs publish"
   },
   "devDependencies": {
-    "@nartallax/package-cutter": "^1.0.2",
-    "@parcel/packager-ts": "^2.12.0",
-    "@parcel/plugin": "^2.12.0",
-    "@parcel/transformer-typescript-types": "^2.12.0",
-    "parcel": "^2.12.0",
-    "parcel-resolver-ts-base-url": "^1.3.1",
-    "typescript": "^5.4.5",
     "@eslint/js": "^9.13.0",
+    "@nartallax/package-cutter": "^1.0.2",
     "@nartallax/ts-build-utils": "^1.0.3",
     "@stylistic/eslint-plugin": "^2.9.0",
     "@types/node": "^22.7.7",
     "@typescript-eslint/eslint-plugin": "^8.10.0",
     "@typescript-eslint/parser": "^8.10.0",
     "eslint": "^9.13.0",
+    "typescript": "^5.4.5",
     "typescript-eslint": "^8.10.0"
-  },
-  "targets": {
-    "release": {
-      "source": "src/main.ts",
-      "context": "node",
-      "isLibrary": true,
-      "optimize": true,
-      "outputFormat": "esmodule"
-    },
-    "types": {
-      "source": "src/main.ts",
-      "sourceMap": false
-    }
   }
 }

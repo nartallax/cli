@@ -1,6 +1,3 @@
-// that's for Parcel. apparently he's not smart enough to detect them automatically. (why?)
-/// <reference types="@types/node" />
-
 import * as Path from "path"
 
 export namespace CLI {
