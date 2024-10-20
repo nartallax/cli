@@ -61,7 +61,12 @@ export namespace CLI {
 		].includes(def.type)
 	}
 
-	export type ArgsByDefinition<C> = C extends Definition<infer T> ? {readonly [k in keyof T]: T[k]} : never
+	export type Definition<T> = {
+		parse(values?: readonly string[]): ParsingResult<T>
+	}
+
+	export type ArgsByDefinition<C> = C extends Definition<infer T> ? ParsingResult<T> : never
+	export type ParsingResult<T> = {readonly [k in keyof T]: T[k]}
 
 	interface Params<T> {
 		/** Defitions of command-line options that program will accept.
@@ -111,9 +116,9 @@ export namespace CLI {
 	}
 
 	/** Entrypoint of the library; creates new CLI definition. */
-	export const define = <T>(params: Params<T>): Definition<T> => new Definition(params)
+	export const define = <T>(params: Params<T>): Definition<T> => new DefinitionImpl(params)
 
-	class Definition<T> {
+	class DefinitionImpl<T> implements Definition<T> {
 
 		static get processArgvWithoutExecutables(): readonly string[] {
 			return process.argv.slice(2)
@@ -227,8 +232,8 @@ export namespace CLI {
 		* Parses value from arguments, puts them into object, validates them.
 		* If there's user error - displays it and exits.
 		* If there's help flag - displays help and exits. */
-		parse(values: readonly string[] = Definition.processArgvWithoutExecutables): ArgsByDefinition<this> {
-			return this.finalize(this.extract(values)) as ArgsByDefinition<this>
+		parse(values: readonly string[] = DefinitionImpl.processArgvWithoutExecutables): ParsingResult<T> {
+			return this.finalize(this.extract(values)) as ParsingResult<T>
 		}
 
 		private checkNumber(name: string, def: NumberArgDef | NumberArrArgDef, value: number): void {
