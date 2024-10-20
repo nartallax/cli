@@ -29,7 +29,7 @@ let main = async (mode) => {
 			await main("typecheck")
 			await main("test")
 			await main("build")
-			await publishToNpm({dryRun: true})
+			await publishToNpm()
 		} break
 	}
 }
