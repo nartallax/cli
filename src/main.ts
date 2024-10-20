@@ -382,7 +382,7 @@ export namespace CLI {
 			}
 
 			if(!haveHelp && abstentMandatories.length > 0){
-				let keys = abstentMandatories.map(opt => this.getLongestKey(opt))
+				const keys = abstentMandatories.map(opt => this.getLongestKey(opt))
 				this.fail("Some mandatory CLI arguments are absent: " + keys.join(", "))
 			}
 
@@ -390,7 +390,7 @@ export namespace CLI {
 		}
 
 		private getLongestKey(opt: string & keyof T): string {
-			let def = this.params.options[opt]
+			const def = this.params.options[opt]
 			return def.keys.sort((a, b) => b.length - a.length)[0] ?? opt
 		}
 
