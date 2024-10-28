@@ -98,8 +98,8 @@ export namespace CLI {
 	/** Get object that can serve as input for the command-line interface.
 	Similar to ArgsByDefinition, but fields with defaults are optional. */
 	export type InputByDefinition<C> = C extends Definition<infer T> ? StructuredInput<T> : never
-	type ParsingResult<T extends ParameterMap> = {readonly [k in keyof T]: ParameterType<T[k]>}
-	type StructuredInput<T extends ParameterMap> = {
+	export type ParsingResult<T extends ParameterMap> = {readonly [k in keyof T]: ParameterType<T[k]>}
+	export type StructuredInput<T extends ParameterMap> = {
 		readonly [k in KeysExtendingValues<T, MandatoryBaseParameter<any>>]: ParameterType<T[k]>
 	} & {
 		readonly [k in KeysExtendingValues<T, OptionalBaseParameter<any>>]?: ParameterType<T[k]>
