@@ -71,7 +71,7 @@ export const parseCliArgs = (): CLIArgs => definition.parse()
 // alternatively, if you want to also provide JS API, not only CLI, you could use defineMain.
 // defineMain will run provided callback if import.meta.url points to currently executed file
 // and will also create a wrapper for the callback for case when it is imported and used as a package
-export const doMainThing = CLI.defineMain(cliParams, import.meta.url, async args => {
+export const doMainThing = CLI.defineMain(definition, import.meta.url, async args => {
   await doTheThing(args)
 })
 ```

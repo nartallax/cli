@@ -589,6 +589,14 @@ export namespace CLI {
 		} as unknown as NumberParameter<T>
 	}
 
+	const realpathWithProperSlashes = async(path: string): Promise<string> => {
+		let result = await Fs.realpath(path)
+		// windows has different slashes, but URLs are always "/"-separated
+		// and we will compare this path with the URL; that's why we should unify them
+		result = result.split(Path.sep).join("/")
+		return result
+	}
+
 	/** Test if currently running script was required as a module, or was started as is with node.
 	Would false-positive if testing script was bundled with some other script (but who does that for CLI utils anyway).
 	@param importMetaUrl URL of script to test. Usually this will be `import.meta.url` value. */
@@ -601,7 +609,7 @@ export namespace CLI {
 		try {
 			// resolving realpath is necessary for scripts in node_modules/.bin/
 			// as they are symlinks to real thing
-			jsFilePath = await Fs.realpath(jsFilePath)
+			jsFilePath = await realpathWithProperSlashes(jsFilePath)
 		} catch(e){
 			if((e as any).type !== "ENOENT"){
 				// this function is not allowed to throw really
@@ -622,7 +630,7 @@ export namespace CLI {
 
 			jsFilePath += ".js"
 			try {
-				jsFilePath = await Fs.realpath(jsFilePath)
+				jsFilePath = await realpathWithProperSlashes(jsFilePath)
 			} catch(e){
 				void e
 				return false
