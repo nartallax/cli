@@ -436,11 +436,11 @@ export namespace CLI {
 		private setDefaults(args: Partial<ParsingResult<T>> | StructuredInput<T>): Partial<ParsingResult<T>> {
 			const result: any = {...args}
 			for(const [argName, def] of Object.entries(this.params.options)){
-				if(!(argName in result) && isArgumentOptional(def)){
+				if(result[argName] === undefined && isArgumentOptional(def)){
 					result[argName] = def.default
 				}
 
-				if(!(argName in result)){
+				if(result[argName] === undefined){
 					// we could throw error about not having mandatory argument here
 					// but this will break --help
 					continue
