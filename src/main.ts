@@ -292,7 +292,7 @@ export namespace CLI {
 			if(typeof(def.max) === "number" && value > def.max){
 				this.fail(`CLI argument "${name}" cannot go above ${def.min}; got ${value}.`)
 			}
-			if(def.type === "int" || def.type === "array of int" && (value % 1) !== 0){
+			if((def.type === "int" || def.type === "array of int") && (value % 1) !== 0){
 				this.fail(`CLI argument ${name} expected integer, but got fractional number instead: ${value}`)
 			}
 			if(!Number.isFinite(value)){
