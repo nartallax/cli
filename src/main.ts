@@ -388,7 +388,7 @@ export namespace CLI {
 				}
 
 				if(isArray){
-					const arr = (result[argName] as unknown[]) ?? []
+					const arr = (result[argName] as unknown[]) ??= []
 					arr.push(actualValue)
 				} else {
 					result[argName] = actualValue
